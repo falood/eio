@@ -1,4 +1,4 @@
-EngineIO
+EIO
 ========
 
 ** TODO: Add description **
