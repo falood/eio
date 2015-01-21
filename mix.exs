@@ -3,7 +3,7 @@ defmodule EIO.Mixfile do
 
   def project do
     [ app: :eio,
-      version: "0.0.1",
+      version: "0.0.2",
       elixir: "~> 1.0",
       deps: deps,
       description: "Elixir Server of engine.io",
