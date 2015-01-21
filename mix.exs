@@ -6,6 +6,9 @@ defmodule EIO.Mixfile do
       version: "0.0.1",
       elixir: "~> 1.0",
       deps: deps,
+      description: "Elixir Server of engine.io",
+      source_url: "https://github.com/elixir-cn/eio",
+      package: package,
     ]
   end
 
@@ -20,5 +23,11 @@ defmodule EIO.Mixfile do
       { :plug,   "~> 0.9.0" },
       { :poison, "~> 1.3.0" },
     ]
+  end
+
+  defp package do
+    %{ licenses: ["BSD 3-Clause"],
+       links: %{"Github" => "https://github.com/elixir-cn/eio"}
+     }
   end
 end

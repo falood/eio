@@ -10,7 +10,7 @@ defmodule EIO.Supervisor do
   end
 
   def init([]) do
-    [ worker(EIO.Polling.Connect, [], [restart: :temporary]),
+    [ worker(EIO.Conn, [], [restart: :temporary]),
     ] |> supervise strategy: :simple_one_for_one
   end
 end
