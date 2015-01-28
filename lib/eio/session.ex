@@ -17,4 +17,8 @@ defmodule EIO.Session do
       _                 -> raise "unknow sid"
     end
   end
+
+  def delete(sid) do
+    :ets.delete(:eio_polling, sd.sid)
+  end
 end

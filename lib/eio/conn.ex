@@ -91,7 +91,7 @@ defmodule EIO.Conn do
 
 
   def terminate({:shutdown, reason}, _sn, sd) do
-    :ets.delete(:eio_polling, sd.sid)
+    EIO.Session.delete(sd.sid)
     case reason do
       :upgrade ->
         nil

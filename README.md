@@ -65,4 +65,5 @@ end
 - [ ] exception
 - [ ] version support
 - [ ] base64 support
+- [ ] jsonp support
 - [ ] binary data support
