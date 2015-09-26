@@ -1,24 +1,43 @@
-defmodule EIO.Session do
-  use Bitwise
-  defstruct sid: nil, conn_pid: nil, callback: nil
+defmodule Eio.Session do
+  defstruct sid: nil, worker_pid: nil, transport: nil
 
-  def new do
-    <<a::size(32), b::size(16), c::size(16), d::size(16), e::size(48)>>
-      = :crypto.strong_rand_bytes(16)
-    args = [a, b, c |> band(0x0fff), d |> band(0x3fff) |> bor(0x8000), e]
-    :io_lib.format("~8.16.0B~4.16.0B4~3.16.0B~4.16.0B~12.16.0B", args)
-    |> List.flatten |> to_string |> Base.encode64 |> String.slice(0, 24)
+  def start do
+    :ets.new(:eio_session, [:set, :named_table, :public])
   end
+
+  def generate_id do
+    Eio.UUID.generate
+  end
+
+
+  def save(%__MODULE__{sid: sid}=session) do
+    :ets.insert(:eio_session, {sid, session})
+  end
+
 
   def get(nil), do: nil
   def get(sid) do
-    case :ets.lookup(:eio_polling, sid) do
+    case :ets.lookup(:eio_session, sid) do
       [{^sid, session}] -> session
-      _                 -> raise "unknow sid"
+      []                -> raise "unknown sid"
     end
   end
 
+
+  def delete(%__MODULE__{sid: sid}) do
+    :ets.delete(:eio_session, sid)
+  end
+
   def delete(sid) do
-    :ets.delete(:eio_polling, sd.sid)
+    :ets.delete(:eio_session, sid)
+  end
+
+
+  def send(%__MODULE__{worker_pid: pid, transport: transport}, msg) do
+    transport.reply(pid, {:message, msg})
+  end
+
+  def close(%__MODULE__{worker_pid: pid, transport: transport}, from \\ :server) when from in [:server, :client] do
+    transport.close(pid, from)
   end
 end

@@ -1,4 +1,6 @@
-defmodule Eio.Supervisor do
+alias Eio.Transports.Polling, as: T
+
+defmodule T.Supervisor do
   use Supervisor
 
   def start_link do
@@ -10,7 +12,7 @@ defmodule Eio.Supervisor do
   end
 
   def init([]) do
-    [ supervisor(Eio.Transports.Polling.Supervisor, [])
-    ] |> supervise strategy: :one_for_one
+    [ worker(T.Worker, [], [restart: :temporary]),
+    ] |> supervise strategy: :simple_one_for_one
   end
 end

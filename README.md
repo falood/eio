@@ -1,61 +1,32 @@
-EIO
+Eio
 ========
 
-ELixir server of [engine.io](http://www.engine.io)
+[engine.io](http://www.engine.io) server for Elixir.
 
 ## Usage
 
-use EIO as standalone server
+use Eio as standalone server
 
 ```elixir
-defmodule MyApp.EIO do
-  use EIO.Router
+defmodule MyApp.Eio do
+  use Eio.Router
 
-  def connect(eio) do
-    eio.send("connect success")
+  def connect(session) do
+    session |> EIO.Session.send("connect success")
   end
 
-  def message(eio, msg) do
-    eio.send("message received")
-    eio.close()
+  def message(session, _msg) do
+    session |> EIO.Session.send("message received")
+    session |> EIO.Session.close
     ...
   end
 
-  def close do
-    ...
-  end
-end
-
-Plug.Adapters.Cowboy.http MyApp.EIO, []
-```
-
-use EIO as phoenix handler
-
-```elixir
-defmodule MyApp.EIO do
-  use EIO.Router, at: MyApp.Endpoint
-
-  def connect(eio) do
-    eio.send("connect success")
-  end
-
-  def message(eio, msg) do
-    eio.send("message received")
-    ...
-  end
-
-  def close do
+  def close(_session) do
     ...
   end
 end
 
-defmodule MyApp.Endpoint do
-  use Phoenix.Endpoint, otp_app: :phonenix_maru
-
-  plug EIO.Plugs.Forword, to: MyApp.EIO
-  ...
-  plug :router, MyApp.Endpoint
-end
+Plug.Adapters.Cowboy.http MyApp.Eio, []
 ```
 
 ## TODO

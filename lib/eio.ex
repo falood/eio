@@ -1,6 +1,6 @@
-defmodule EIO do
+defmodule Eio do
   def start(_, _) do
-    :ets.new(:eio_polling, [:set, :named_table, :public])
-    EIO.Supervisor.start_link
+    Eio.Session.start
+    Eio.Supervisor.start_link
   end
 end

@@ -1,27 +1,4 @@
-defmodule EIO.Parser do
-  defmodule Polling do
-    def encode(:pong),           do: "1:3"
-    def encode({:pong, msg}),    do: "#{byte_size(msg) + 1}:3#{msg}"
-    def encode({:connect, msg}), do: "#{byte_size(msg) + 1}:0#{msg}"
-    def encode({:message, msg}), do: "#{byte_size(msg) + 1}:4#{msg}"
-
-    def decode(s) do
-      s |> EIO.Parser.payload([]) |> Enum.map &EIO.Parser.packet/1
-    end
-  end
-
-  defmodule WebSocket do
-    def encode(:pong),           do: "3"
-    def encode({:pong, rest}),   do: "3#{rest}"
-    def encode({:connect, msg}), do: "0#{msg}"
-    def encode({:message, msg}), do: "4#{msg}"
-
-    def decode(s) do
-      s |> EIO.Parser.packet
-    end
-  end
-
-
+defmodule Eio.Parser do
   def payload("", result), do: result |> Enum.reverse
   def payload(s, result) do
     [len, rest] = s |> String.split(":", parts: 2)

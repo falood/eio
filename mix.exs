@@ -1,33 +1,35 @@
-defmodule EIO.Mixfile do
+defmodule Eio.Mixfile do
   use Mix.Project
 
   def project do
     [ app: :eio,
-      version: "0.0.2",
+      version: "0.1.0",
       elixir: "~> 1.0",
+      build_embedded: Mix.env == :prod,
+      start_permanent: Mix.env == :prod,
       deps: deps,
       description: "Elixir Server of engine.io",
-      source_url: "https://github.com/elixir-cn/eio",
+      source_url: "https://github.com/falood/eio",
       package: package,
     ]
   end
 
   def application do
-    [ mod: { EIO, [] },
+    [ mod: { Eio, [] },
       applications: [:logger, :plug]
     ]
   end
 
   defp deps do
-    [ { :cowboy, "~> 1.0.0" },
-      { :plug,   "~> 0.10.0" },
-      { :poison, "~> 1.3.1" },
+    [ { :cowboy, "~> 1.0" },
+      { :plug,   "~> 1.0" },
+      { :poison, "~> 1.5" },
     ]
   end
 
   defp package do
     %{ licenses: ["BSD 3-Clause"],
-       links: %{"Github" => "https://github.com/elixir-cn/eio"}
+       links: %{"Github" => "https://github.com/falood/eio"}
      }
   end
 end
